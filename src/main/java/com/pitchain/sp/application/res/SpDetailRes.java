@@ -31,7 +31,7 @@ public record SpDetailRes(
         @S3Url
         String thumbnailImgURL,
         @NotNull
-        Integer views,
+        Long views,
         @NotBlank
         String name,
         @NotBlank

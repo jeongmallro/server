@@ -7,6 +7,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -45,5 +46,14 @@ public class SpRepositoryCustom {
 
     private BooleanExpression ltSpId(Long lastSpId) {
         return lastSpId == null ? null : sp.id.lt(lastSpId);
+    }
+
+    @Transactional
+    public long updateSpView(Long spId, Long views) {
+         return queryFactory
+                .update(sp)
+                .set(sp.views, sp.views.add(views))
+                .where(sp.id.eq(spId))
+                .execute();
     }
 }

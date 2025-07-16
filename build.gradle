@@ -60,6 +60,9 @@ dependencies {
 
     // Discord Webhook
     implementation("club.minnced:discord-webhooks:0.8.4")
+
+    // awaitility
+    testImplementation 'org.awaitility:awaitility:4.3.0'
 }
 
 // ------------------

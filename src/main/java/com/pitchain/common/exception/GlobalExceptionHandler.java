@@ -6,7 +6,9 @@ import com.pitchain.common.apiPayload.ErrorResponseDTO;
 import com.pitchain.common.apiPayload.ErrorStatus;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.ObjectError;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+@Slf4j
 @RestControllerAdvice
 @RequiredArgsConstructor
 public class GlobalExceptionHandler {
@@ -70,6 +73,19 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
+                .body(customResponse);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<CustomResponse> handleDataIntegrityViolationException(DataIntegrityViolationException e) {
+        log.error("DataIntegrityViolationException = {}", e.getMessage());
+        String errorMessage = "DataIntegrityViolationException(제약 조건 위반 오류)가 발생했습니다.";
+
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+        CustomResponse customResponse = CustomResponse.onFailure(httpStatus.name(), errorMessage);
+
+        return ResponseEntity
+                .status(httpStatus)
                 .body(customResponse);
     }
 }

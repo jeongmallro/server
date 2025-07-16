@@ -28,7 +28,7 @@ public class Sp extends BaseEntity {
     @Column(nullable = false)
     private String thumbnailImgKey;
 
-    private int views = 0;
+    private Long views;
 
     @Column(nullable = false)
     private String name;
@@ -42,7 +42,7 @@ public class Sp extends BaseEntity {
         sp.thumbnailImgKey = thumbnailImgKey;
         sp.name = name;
         sp.spStatus = SpStatus.TRANSCODING;
-        sp.views = 0;
+        sp.views = 0L;
         return sp;
     }
 
